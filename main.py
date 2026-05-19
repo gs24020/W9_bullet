@@ -501,15 +501,16 @@ async def main():
     global game_win
     global game_over
 
-    while True:
+    running = True
+
+    while running:
 
         clock.tick(60)
 
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
-                pygame.quit()
-                raise SystemExit
+                running = False
 
             if event.type == pygame.KEYDOWN:
 
@@ -598,7 +599,10 @@ async def main():
 
             screen.blit(
                 txt,
-                (WIDTH // 2 - 180, HEIGHT // 2 - 50)
+                (
+                    WIDTH // 2 - txt.get_width() // 2,
+                    HEIGHT // 2 - 50
+                )
             )
 
         if game_over:
@@ -611,12 +615,18 @@ async def main():
 
             screen.blit(
                 txt,
-                (WIDTH // 2 - 220, HEIGHT // 2 - 50)
+                (
+                    WIDTH // 2 - txt.get_width() // 2,
+                    HEIGHT // 2 - 50
+                )
             )
 
-        pygame.display.flip()
+        pygame.display.update()
 
         await asyncio.sleep(0)
 
+    pygame.quit()
 
-asyncio.run(main())
+
+if __name__ == "__main__":
+    asyncio.run(main())
